@@ -11,6 +11,10 @@ from pytube import YouTube
 import os
 import assemblyai as aai
 import openai
+from .models import BlogPost
+
+
+
 
 # Create your views here.
 @login_required
@@ -51,15 +55,16 @@ def generate_blog(request):
         new_blog_article.save()
 
         # return blog article as a response
+        
         return JsonResponse({'content': blog_content})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
-
 
 def yt_title(link):
     yt = YouTube(link)
     title = yt.title
     return title
+
 
 def download_audio(link):
     yt = YouTube(link)
