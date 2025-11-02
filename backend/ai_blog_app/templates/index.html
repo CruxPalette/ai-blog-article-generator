@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Blog Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    {% load static %}
-
 
     <style>
         @keyframes rotate {
@@ -49,9 +47,8 @@
             animation-timing-function: linear; 
         }
     </style>
-
 </head>
-<body class="flex flex-col min-h-screen bg-gray-100 font-sans antialiased">
+<body class="flex flex-col min-h-scrren bg-gray-100 font-sans antialised">
     <!-- Navbar -->
     <nav class="bg-blue-600 p-4 text-white flex justify-between">
         <div>
@@ -60,7 +57,7 @@
         <div>
             <a href="#" class="text-white hover:underline mx-4">Welcome {{ user.username }}</a>
             <a href="/blog-list" class="text-white hover:underline mx-4">Saved Blog Posts</a>
-            <a href="logout" class="text-white hover:underline">Logout</a>
+            <a href="#" class="text-white hover:underline">Logout</a>
         </div>
     </nav>
 
@@ -88,33 +85,39 @@
                 <h2 class="text-xl mb-4 font-semibold">Enter Youtube Video Link</h2>
                 <div class="flex space-x-4">
                     <input id="youtubeLink" type="url" placeholder="Paste Youtube Link..." class="flex-grow p-2 border border-blue-400 rounded-l-md">
-                    <button id="generateBlogButton" class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700  transition-colors">Generate</button>
+                    <button id="generateBlogButton" class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition-colors">Generate</button>
                 </div>
             </div>
 
 
             <!-- section for loading circle -->
-            <div style="display:none" id="loading-circle" class="load"></div>
+            <div style="display:block;" id="loading-circle" class="load"></div>
 
 
             <!-- Generated Blog Display Section -->
             <section class="mt-10 flex-grow">
                 <h2 class="text-xl mb-4 font-semibold">Generated Blog Article</h2>
                 <div id="blogContent" class="mt-2 text-gray-700 space-y-4">
-                    <!-- section for loading circle -->
+                    This is only for preview!
+                    My APIs are out of tokens!
+                    11!!!!!@#!#!@#&^T!@&#T!YF@YETFYFD^WEDTWIEGDIWTEIDFWYETF
+                    weuwheduwghduhwedw
+                    weuduwegdwed
+                    wedwedw
                 </div>
             </section>
         </div>
     </div>
 
 
-    <footer class="text-center p-4 text-blacl mb-6">
-        Powered by <a href="github.com/CruxPalette">Chen Zhao</a>
+    <footer class="text-center p-4 text-blacl mt-6">
+        Powered by <a href="https://github.com/CruxPalette">Chen Zhao</a>
     </footer>
 
     <script>
         document.getElementById('generateBlogButton').addEventListener('click', async () => {
             
+
             const youtubeLink = document.getElementById('youtubeLink').value;
             const blogContent = document.getElementById('blogContent');
             

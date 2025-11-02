@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
@@ -12,9 +11,6 @@ import os
 import assemblyai as aai
 import openai
 from .models import BlogPost
-
-
-
 
 # Create your views here.
 @login_required
@@ -55,7 +51,6 @@ def generate_blog(request):
         new_blog_article.save()
 
         # return blog article as a response
-        
         return JsonResponse({'content': blog_content})
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
@@ -64,7 +59,6 @@ def yt_title(link):
     yt = YouTube(link)
     title = yt.title
     return title
-
 
 def download_audio(link):
     yt = YouTube(link)
@@ -77,7 +71,7 @@ def download_audio(link):
 
 def get_transcription(link):
     audio_file = download_audio(link)
-    aai.settings.api_key = "02c5a064ddc747f89a6f27261468ac53"
+    aai.settings.api_key = "your-assemblyai-api-key"
 
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(audio_file)
@@ -85,7 +79,7 @@ def get_transcription(link):
     return transcript.text
 
 def generate_blog_from_transcription(transcription):
-    openai.api_key = "ysk-proj-EomoX9JzJgGGu2GWuZwWPWZ0NRn8mKB3INC3z2s-lY6byHG6zcG6FOVoXpavgYTYDBeGenAJRMT3BlbkFJIqWYMsFb5XYhuW9tVCDCbSeLCedt5zOG3dNGSeMdNaRgJiYw0XiQ0lVXerTPld7HzlHez-CVkA"
+    openai.api_key = "your-openai-api-key"
 
     prompt = f"Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcript, but dont make it look like a youtube video, make it look like a proper blog article:\n\n{transcription}\n\nArticle:"
 
@@ -99,19 +93,33 @@ def generate_blog_from_transcription(transcription):
 
     return generated_content
 
+
+
+def blog_list(request):
+    blog_articles = BlogPost.objects.filter(user=request.user)
+    return render(request, "all-blogs.html", {'blog_articles': blog_articles})
+
+def blog_details(request, pk):
+    blog_article_detail = BlogPost.objects.get(id=pk)
+    if request.user == blog_article_detail.user:
+        return render(request, 'blog-details.html', {'blog_article_detail': blog_article_detail})
+    else:
+        return redirect('/')
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('/')
         else:
             error_message = "Invalid username or password"
-            return render(request, 'login.html', {'error_message':error_message})
+            return render(request, 'login.html', {'error_message': error_message})
+        
     return render(request, 'login.html')
-    
 
 def user_signup(request):
     if request.method == 'POST':
@@ -132,10 +140,9 @@ def user_signup(request):
         else:
             error_message = 'Password do not match'
             return render(request, 'signup.html', {'error_message':error_message})
+        
     return render(request, 'signup.html')
-    
 
 def user_logout(request):
     logout(request)
     return redirect('/')
-    
